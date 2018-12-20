@@ -19,22 +19,6 @@ import test.interceptor.TestInterceptor;
 import java.util.List;
 
 @Configuration
-public class GlobalConfiguration implements WebMvcConfigurer {
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters){
-        FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
-        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setSerializerFeatures(
-                SerializerFeature.DisableCircularReferenceDetect
-        );
-        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
-        converters.add(fastJsonHttpMessageConverter);
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new TestInterceptor());
-    }
-
+@EnableCaching
+public class GlobalConfiguration {
 }
