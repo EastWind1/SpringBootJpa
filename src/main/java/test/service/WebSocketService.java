@@ -26,10 +26,9 @@ public class WebSocketService implements WebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
+        logger.info("User " + webSocketSession.getPrincipal().getName() +"send: " + webSocketMessage.getPayload());
         for (WebSocketSession client : clients) {
-            if(!webSocketSession.getPrincipal().getName().equals(client.getPrincipal().getName())) {
                 client.sendMessage(webSocketMessage);
-            }
         }
 
     }

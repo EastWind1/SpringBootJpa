@@ -65,7 +65,6 @@ public class LogConfiguration {
 
     @Before("logService()")
     public void serviceDoBefore(JoinPoint joinPoint) throws Throwable {
-
         // 记录内容
         logger.info("Service invoke: { "
                 + "Method : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName()

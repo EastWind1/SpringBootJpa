@@ -1,4 +1,4 @@
-package test.event;
+package test.pojo.event;
 
 import org.springframework.context.ApplicationEvent;
 
