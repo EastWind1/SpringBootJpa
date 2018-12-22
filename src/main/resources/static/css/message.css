@@ -1,0 +1,16 @@
+@keyframes danmu {
+    from {
+        top: 10%;
+        left: 100%;
+    }
+    to {
+        top: 10%;
+        left: 0%;
+        transform: translateX(-100%);
+    }
+}
+.message {
+    position: absolute;
+
+    animation: danmu 10000ms linear;
+}

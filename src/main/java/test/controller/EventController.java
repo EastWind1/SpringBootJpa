@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import test.pojo.event.MyTestEvent;
 
 @RestController
-@RequestMapping("/event")
+@RequestMapping("/api/event")
 public class EventController {
     @Autowired
     private ApplicationContext context; // 应用上下文

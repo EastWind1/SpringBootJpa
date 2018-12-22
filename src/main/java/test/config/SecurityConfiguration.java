@@ -28,13 +28,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/signup.html").permitAll()
-                    .antMatchers(HttpMethod.POST, "/user").permitAll()
-                    .anyRequest().authenticated()
+                    .antMatchers("/api/*").authenticated()
+                    .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .and()
-                    .formLogin().permitAll()
-                .and()
-                    .logout().permitAll();
+                    .formLogin()
+                    .loginPage("/login")
+                    .permitAll();
 
     }
 
