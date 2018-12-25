@@ -1,19 +1,22 @@
 package test.service;
 
-import com.alibaba.fastjson.JSON;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+import test.pojo.entity.User;
 import test.pojo.model.SocketMessage;
+import test.pojo.model.mapper.SocketMessageMapper;
 
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public class WebSocketService implements WebSocketHandler {
     private static Logger logger = LogManager.getLogger(WebSocketService.class);
     private static CopyOnWriteArraySet<WebSocketSession> clients = new CopyOnWriteArraySet();
+
 
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession) throws Exception {
@@ -49,4 +52,5 @@ public class WebSocketService implements WebSocketHandler {
     public boolean supportsPartialMessages() {
         return false;
     }
+
 }

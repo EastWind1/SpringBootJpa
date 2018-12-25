@@ -1,5 +1,6 @@
 package test.pojo.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,9 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-@Getter
-@Setter
-@ToString
+@Data
 public class User implements Serializable, UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

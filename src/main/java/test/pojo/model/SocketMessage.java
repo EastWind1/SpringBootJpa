@@ -1,26 +1,11 @@
 package test.pojo.model;
 
-import java.util.Date;
+import lombok.Data;
 
+@Data
 public class SocketMessage {
-
-    private Date date;
-
-    private String text;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    private Integer user_id;
+    private String user_name;
+    private Integer message_id;
+    private String message_context;
 }
