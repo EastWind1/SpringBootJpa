@@ -25,6 +25,7 @@
         <java.version>1.8</java.version>
         <lombok.version>1.18.4</lombok.version>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
+        <lombok.version>1.18.4</lombok.version>
     </properties>
 
     <dependencies>

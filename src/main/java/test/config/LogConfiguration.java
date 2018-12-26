@@ -38,7 +38,7 @@ public class LogConfiguration {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         context = SecurityContextHolder.getContext(); // 获取Security上下文
-        // 记录请求内容
+
         logger.info("Got request: { User: " + context.getAuthentication().getName()
                     + ". Url: " + request.getRequestURL().toString()
                     + ". Type: " + request.getMethod()

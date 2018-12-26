@@ -16,6 +16,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
         return new WebSocketService();
     }
 
+    // websocket请求api
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
         webSocketHandlerRegistry.addHandler(webSocketService(), "/api/socket");

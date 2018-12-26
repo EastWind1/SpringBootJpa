@@ -1,19 +1,15 @@
 package test.controller;
 
-import jdk.nashorn.internal.objects.annotations.Constructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import test.pojo.entity.User;
 import test.service.UserService;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import java.util.List;
+
+/**
+ * 用户相关控制器
+ */
 
 @RestController
 @RequestMapping("/api/user")
@@ -23,19 +19,29 @@ public class UserController {
     @Autowired
     private EntityManager entityManager;
 
-
+    /**
+     * 前端检测是否登录，使用Spring Security拦截
+     * @return
+     */
     @GetMapping("")
     @ResponseBody
-    public List<User> getAll() {
+    public Boolean isLogin() {
         //        QUser qUsers = QUser.users;
         //        JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
         //        return jpaQueryFactory.select(qUsers)
         //                .from(qUsers)
         //                .where(qUsers.username.startsWith("a"))
         //                .fetch();
-        return userService.getAllUsers();
+        return true;
     }
 
+    /**
+     * 注册
+     * @param username
+     * @param password
+     * @return
+     * @throws Exception
+     */
     @PostMapping("")
     @ResponseBody
     public User signup(String username, String password) throws Exception {

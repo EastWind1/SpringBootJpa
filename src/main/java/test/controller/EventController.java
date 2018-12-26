@@ -5,6 +5,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 import test.pojo.event.MyTestEvent;
 
+/**
+ * 事件调试控制器
+ */
+
 @RestController
 @RequestMapping("/api/event")
 public class EventController {

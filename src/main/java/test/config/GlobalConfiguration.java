@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 
 @Configuration
-@EnableCaching
-@EnableAsync
+@EnableCaching // 开启缓存
+@EnableAsync // 开启异步
 public class GlobalConfiguration {
 }
