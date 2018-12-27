@@ -21,6 +21,7 @@ public class UserController {
 
     /**
      * 前端检测是否登录，使用Spring Security拦截
+     *
      * @return
      */
     @GetMapping("")
@@ -37,8 +38,7 @@ public class UserController {
 
     /**
      * 注册
-     * @param username
-     * @param password
+     *
      * @return
      * @throws Exception
      */
@@ -46,9 +46,10 @@ public class UserController {
     @ResponseBody
     public User signup(String username, String password) throws Exception {
         User user = new User();
-        if (!username.isEmpty() && !password.isEmpty()) {
-            user.setUsername(username);
-            user.setPassword(password);
+        user.setUsername(username);
+        user.setPassword(password);
+        if (user.getUsername() == null || user.getPassword() == null) {
+            throw new Exception("用户名或密码为空");
         }
         return userService.add(user);
     }

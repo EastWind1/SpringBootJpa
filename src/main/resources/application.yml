@@ -1,4 +1,6 @@
 spring:
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${filedir.windows}
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/runoob?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
@@ -14,5 +16,9 @@ spring:
     host: 127.0.0.1
     port: 6379
     database: 1
+filedir:
+  linux: /remote/apks
+  windows: E:/apks
+  userfiles: /userfiles
 
 

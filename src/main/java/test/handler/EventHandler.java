@@ -1,15 +1,18 @@
-package test.service;
+package test.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import test.pojo.event.MyTestEvent;
 
-@Service
+/**
+ * 事件处理
+ */
 @Async
-public class MyEventService {
+@Component
+public class EventHandler {
 
     private Logger logger = LoggerFactory.getLogger(MyTestEvent.class);
 
