@@ -7,8 +7,8 @@ import test.dao.MessageDao;
 import test.dao.UserDao;
 import test.pojo.entity.Message;
 import test.pojo.entity.User;
-import test.pojo.model.SocketMessage;
-import test.pojo.model.mapper.SocketMessageMapper;
+import test.pojo.dto.SocketMessage;
+import test.pojo.dto.mapper.SocketMessageMapper;
 
 import java.util.ArrayList;
 import java.util.List;
