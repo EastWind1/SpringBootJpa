@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;

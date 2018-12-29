@@ -15,11 +15,11 @@ public class NoteServiceTest {
 
     @Test
     public void test1() {
-        noteService.getByUserId();
+
     }
 
     @Test
     public void test2() {
-        noteService.getShared();
+
     }
 }

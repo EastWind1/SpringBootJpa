@@ -27,7 +27,7 @@ public class FileService {
     private String windowsdir;
 
     private void setDir(){
-        if(System.getenv("OS").equals("Windows_NT")) {
+        if("Windows_NT".equals(System.getenv("OS"))) {
             filedir = windowsdir + userfilesdir;
         } else {
             filedir = linuxdir + userfilesdir;

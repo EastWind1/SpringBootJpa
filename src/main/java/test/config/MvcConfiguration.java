@@ -10,10 +10,23 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import test.interceptor.TestInterceptor;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
+
+    /**
+     * MVC层跨域配置，即使在SpringSecurity中配置cors后也必须添加
+     * @param registry
+     */
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry){
+        registry.addMapping("/**").allowedOrigins("*").allowedHeaders("*").allowCredentials(true)
+                .allowedMethods("GET","POST","PUT","DELETE","OPTIONS");
+
+    }
 
     /**
      * fastjson配置
@@ -42,14 +55,5 @@ public class MvcConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new TestInterceptor());
     }
 
-    /**
-     * 跨域配置
-     * @param registry
-     */
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/**")
-                .allowedMethods("GET","POST","PUT","DELETE");
-    }
 }

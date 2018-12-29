@@ -3,25 +3,14 @@ package test.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.cors.CorsUtils;
 import test.service.UserService;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 @Configuration
@@ -37,11 +26,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // 5.x以上版本必须配置密码配置类
     }
 
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                // 关闭csrf防护
-                .csrf().disable()
+                // 关闭csrf防护,cors防护
+                .csrf().disable().cors()
+                .and()
                 .authorizeRequests()
+                // 允许所求跨域前置请求
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 // 允许添加用户api访问
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .antMatchers("/api/*").authenticated()
