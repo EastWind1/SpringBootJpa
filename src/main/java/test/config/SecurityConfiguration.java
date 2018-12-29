@@ -7,10 +7,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsUtils;
+import test.pojo.entity.User;
 import test.service.UserService;
+import test.util.JwtTokenUtils;
+
 import java.io.PrintWriter;
 
 @Configuration
@@ -44,12 +48,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .loginProcessingUrl("/api/login")
                     // 覆盖默认登陆后跳转原访问界面
                     .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
-                            httpServletResponse.setContentType("application/json;charset=utf-8");
-                            PrintWriter out = httpServletResponse.getWriter();
-                            out.write("{\"status\": true,\"msg\": \"登录成功\"}");
-                            out.flush();
-                            out.close();
-                        })
+                        User user = (User) authentication.getPrincipal();
+                        String token = JwtTokenUtils.createToken(user.getUsername(), false);
+                        httpServletResponse.setHeader("token", JwtTokenUtils.TOKEN_PREFIX + token);
+                        httpServletResponse.setContentType("application/json;charset=utf-8");
+                        PrintWriter out = httpServletResponse.getWriter();
+                        out.write("{\"status\": true,\"msg\": \"登录成功\"}");
+                        out.flush();
+                        out.close();
+                    })
                     // 覆盖默认登陆失败后跳转登录界面
                     .failureHandler((httpServletRequest, httpServletResponse, e) -> {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
@@ -73,7 +80,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         out.write("{\"status\": false,\"msg\": \"请求失败 - "+ e.getMessage() +"\"}");
                         out.flush();
                         out.close();
-                    });
+                    })
+                .and()
+                    // TODO: 添加TOKEN验证
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }
 
