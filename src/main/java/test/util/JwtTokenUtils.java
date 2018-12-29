@@ -11,8 +11,8 @@ public class JwtTokenUtils {
     public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
 
-    private static final String SECRET = "jwtsecretdemo";
-    private static final String ISS = "echisan";
+    private static final String SECRET = "tinynote";
+    private static final String ISS = "springbootjpa";
 
     // 过期时间是3600秒，既是1个小时
     private static final long EXPIRATION = 3600L;
@@ -39,7 +39,7 @@ public class JwtTokenUtils {
 
     // 是否已过期
     public static boolean isExpiration(String token){
-        return getTokenBody(token).getExpiration().before(new Date());
+        return getTokenBody(token).getExpiration().after(new Date());
     }
 
     private static Claims getTokenBody(String token){

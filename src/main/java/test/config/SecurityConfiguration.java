@@ -1,5 +1,6 @@
 package test.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,9 +9,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
+import test.config.authentication.AuthenticateEntryPoint;
+import test.config.authentication.AuthenticateFailHandler;
+import test.config.authentication.AuthenticateSuccessHandler;
+import test.config.authentication.TokenAuthenticateFilter;
 import test.pojo.entity.User;
 import test.service.UserService;
 import test.util.JwtTokenUtils;
@@ -20,10 +28,24 @@ import java.io.PrintWriter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    // 此处必须使用@Bean装配，否则会无限循环，导致栈溢出
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService(){
         return new UserService();
     }
+
+    @Autowired
+    public AuthenticateSuccessHandler authenticateSuccessHandler;
+
+    @Autowired
+    public AuthenticateFailHandler authenticateFailHandler;
+
+    @Autowired
+    public AuthenticateEntryPoint authenticateEntryPoint;
+
+    @Autowired
+    public TokenAuthenticateFilter tokenAuthenticateFilter;
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService()).passwordEncoder(new BCryptPasswordEncoder());
@@ -47,24 +69,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .formLogin()
                     .loginProcessingUrl("/api/login")
                     // 覆盖默认登陆后跳转原访问界面
-                    .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
-                        User user = (User) authentication.getPrincipal();
-                        String token = JwtTokenUtils.createToken(user.getUsername(), false);
-                        httpServletResponse.setHeader("token", JwtTokenUtils.TOKEN_PREFIX + token);
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = httpServletResponse.getWriter();
-                        out.write("{\"status\": true,\"msg\": \"登录成功\"}");
-                        out.flush();
-                        out.close();
-                    })
+                    .successHandler(authenticateSuccessHandler)
                     // 覆盖默认登陆失败后跳转登录界面
-                    .failureHandler((httpServletRequest, httpServletResponse, e) -> {
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = httpServletResponse.getWriter();
-                        out.write("{\"status\": false,\"msg\": \"登录失败 - "+ e.getMessage() +"\"}");
-                        out.flush();
-                        out.close();
-                    })
+                    .failureHandler(authenticateFailHandler)
                     .permitAll()
                 .and()
                     .logout()
@@ -73,16 +80,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     // 覆盖默认访问未授权api跳转登录界面
                     .exceptionHandling()
-                    .authenticationEntryPoint((httpServletRequest, httpServletResponse, e) -> {
-                        httpServletResponse.setStatus(401);
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = httpServletResponse.getWriter();
-                        out.write("{\"status\": false,\"msg\": \"请求失败 - "+ e.getMessage() +"\"}");
-                        out.flush();
-                        out.close();
-                    })
+                    .authenticationEntryPoint(authenticateEntryPoint)
                 .and()
-                    // TODO: 添加TOKEN验证
+                    // 添加Token验证，关闭默认Session验证
+                    .addFilterBefore(tokenAuthenticateFilter, UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }
