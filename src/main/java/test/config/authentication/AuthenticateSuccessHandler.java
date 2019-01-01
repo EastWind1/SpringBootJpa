@@ -19,6 +19,7 @@ public class AuthenticateSuccessHandler implements AuthenticationSuccessHandler 
         User user = (User) authentication.getPrincipal();
         String token = JwtTokenUtils.createToken(user.getUsername(), false);
         httpServletResponse.setHeader(JwtTokenUtils.TOKEN_HEADER, JwtTokenUtils.TOKEN_PREFIX + token);
+        httpServletResponse.setHeader("Access-Control-Expose-Headers", JwtTokenUtils.TOKEN_HEADER);
         httpServletResponse.setContentType("application/json;charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
         out.write("{\"status\": true,\"msg\": \"登录成功\"}");

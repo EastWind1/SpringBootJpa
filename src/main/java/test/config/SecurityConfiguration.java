@@ -63,8 +63,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 // 允许添加用户api访问
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
-                .antMatchers("/api/*").authenticated()
-                .antMatchers("/userfiles/*").authenticated()
+                .antMatchers("/api/**").authenticated()
+                .antMatchers("/userfiles/**").authenticated()
                 .and()
                     .formLogin()
                     .loginProcessingUrl("/api/login")
