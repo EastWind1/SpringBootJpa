@@ -20,11 +20,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserDao userDao;
 
-    @Cacheable(cacheNames = "'usercache'")
-    public List<User> getAllUsers() {
-        return userDao.findAll();
-    }
-
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userDao.findByUsername(s);

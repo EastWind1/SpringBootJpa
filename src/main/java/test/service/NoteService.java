@@ -2,6 +2,8 @@ package test.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
@@ -34,11 +36,11 @@ public class NoteService {
         note.setShared(true);
         return noteDao.save(note);
     }
-
+    @CacheEvict(cacheNames = "usernotes")
     public void delete(Integer id){
         noteDao.deleteById(id);
     }
-
+    @CachePut(cacheNames = "usernotes")
     public Note update(Note note){
         note.setUser(userService.getAuthUser());
         return noteDao.save(note);
