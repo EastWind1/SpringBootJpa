@@ -15,5 +15,5 @@ public interface SocketMessageMapper {
             @Mapping(source = "message.id",target = "message_id"),
             @Mapping(source = "message.context",target = "message_context")
     })
-    public SocketMessage map(User user, Message message);
+    SocketMessage map(User user, Message message);
 }

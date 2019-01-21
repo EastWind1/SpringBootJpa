@@ -1,7 +1,6 @@
 package test.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import test.dao.UserDao;
 import test.pojo.entity.User;
-
-import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {

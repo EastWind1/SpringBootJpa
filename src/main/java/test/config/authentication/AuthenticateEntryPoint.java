@@ -17,7 +17,7 @@ public class AuthenticateEntryPoint implements AuthenticationEntryPoint {
         httpServletResponse.setStatus(401);
         httpServletResponse.setContentType("application/json;charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();
-        out.write("{\"status\": false,\"msg\": \"请求失败 - "+ e.getMessage() +"\"}");
+        out.write("{\"status\": false,\"msg\": \"认证失败 - "+ e.getMessage() +"\"}");
         out.flush();
         out.close();
     }

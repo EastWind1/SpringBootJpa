@@ -6,10 +6,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import test.interceptor.TestInterceptor;
 
 import java.util.Arrays;
@@ -35,7 +32,9 @@ public class MvcConfiguration implements WebMvcConfigurer {
         } else {
             filedir = linuxdir;
         }
-        registry.addResourceHandler("file:" + filedir);
+        filedir = "file:" + filedir + "/";
+        registry.addResourceHandler("/apks/**").addResourceLocations(filedir);
+        registry.addResourceHandler("/userfiles/**").addResourceLocations(filedir + "userfiles/");
     }
     /**
      * MVC层跨域配置，即使在SpringSecurity中配置cors后也必须添加
