@@ -2,6 +2,7 @@ package test.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,11 +37,11 @@ public class NoteService {
         note.setShared(true);
         return noteDao.save(note);
     }
-    @CacheEvict(cacheNames = "usernotes")
+
     public void delete(Integer id){
         noteDao.deleteById(id);
     }
-    @CachePut(cacheNames = "usernotes")
+
     public Note update(Note note){
         note.setUser(userService.getAuthUser());
         return noteDao.save(note);
@@ -49,12 +50,12 @@ public class NoteService {
     public Note getById(Integer id){
         return noteDao.findById(id).get();
     }
-    @Cacheable(cacheNames = "usernotes")
+
     public List<Note> getByUserId(){
         return noteDao.findByUserId(userService.getAuthUser().getId());
     }
 
-    @Cacheable(cacheNames = "sharednotes")
+    @Cacheable(value = "notes", key = "'sharenotes'")
     public List<Note> getShared() {
         QNote qnote = QNote.note;
         return new JPAQueryFactory(entityManager)
