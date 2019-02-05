@@ -55,12 +55,14 @@ public class NoteService {
         return noteDao.findByUserId(userService.getAuthUser().getId());
     }
 
-    @Cacheable(value = "notes", key = "'sharenotes'")
+    @CachePut(value = "notes", key = "'sharenotes'")
     public List<Note> getShared() {
         QNote qnote = QNote.note;
         return new JPAQueryFactory(entityManager)
                 .select(qnote).from(qnote)
                 .where(qnote.shared.eq(true))
+                .orderBy(qnote.date.desc())
+                .limit(20)
                 .fetch();
     }
 }

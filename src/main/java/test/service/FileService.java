@@ -130,8 +130,9 @@ public class FileService {
      * 删除文件
      */
     public Boolean delete(Integer id) {
+        setDir();
         ServerFile serverFile = fileDao.findById(id).get();
-        File file = new File(serverFile.getPath());
+        File file = new File(filedir + serverFile.getPath());
         if(file.exists()){
             fileDao.delete(serverFile);
             return file.delete();

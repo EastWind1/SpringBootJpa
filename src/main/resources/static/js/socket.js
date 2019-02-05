@@ -1,7 +1,7 @@
 var websocket;
 
 function connection() {
-    websocket = new WebSocket("ws:" + location.host + "/api/socket")
+    websocket = new WebSocket("ws:" + location.host + "/api/socket");
     websocket.onerror = function () {
         setMessageInnerHTML("WebSocket连接发生错误");
     };
