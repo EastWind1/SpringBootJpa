@@ -1,6 +1,7 @@
 package test.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.devtools.restart.FailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,10 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
-import test.config.authentication.AuthenticateEntryPoint;
-import test.config.authentication.AuthenticateFailHandler;
-import test.config.authentication.AuthenticateSuccessHandler;
-import test.config.authentication.TokenAuthenticateFilter;
+import test.config.authentication.*;
 import test.pojo.entity.User;
 import test.service.UserService;
 import test.util.JwtTokenUtils;
@@ -68,11 +66,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/userfiles/**").authenticated()
                 .and()
                     .formLogin()
-                    .loginProcessingUrl("/api/login")
-                    // 覆盖默认登陆后跳转原访问界面
-                    .successHandler(authenticateSuccessHandler)
-                    // 覆盖默认登陆失败后跳转登录界面
-                    .failureHandler(authenticateFailHandler)
                     .permitAll()
                 .and()
                     .logout()
@@ -83,10 +76,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .exceptionHandling()
                     .authenticationEntryPoint(authenticateEntryPoint)
                 .and()
+                    // 覆盖原有登录拦截器，改用json、form两种形式
+                    .addFilterAt(formAndJsonAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                     // 添加Token验证，关闭默认Session验证
                     .addFilterBefore(tokenAuthenticateFilter, UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
 
+    @Bean
+    public FormAndJsonAuthenticationFilter formAndJsonAuthenticationFilter() throws Exception {
+        FormAndJsonAuthenticationFilter filter = new FormAndJsonAuthenticationFilter();
+        filter.setAuthenticationSuccessHandler(authenticateSuccessHandler);
+        filter.setAuthenticationFailureHandler(authenticateFailHandler);
+        filter.setFilterProcessesUrl("/api/login");
+
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
     }
 
 }
