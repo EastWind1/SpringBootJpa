@@ -33,8 +33,7 @@ public class FormAndJsonAuthenticationFilter extends UsernamePasswordAuthenticat
                         authenticationBean.getUsername(), authenticationBean.getPassword());
             }catch (IOException e) {
                 e.printStackTrace();
-                authRequest = new UsernamePasswordAuthenticationToken(
-                        "", "");
+                authRequest = new UsernamePasswordAuthenticationToken("", "");
             }finally {
                 setDetails(request, authRequest);
                 return this.getAuthenticationManager().authenticate(authRequest);

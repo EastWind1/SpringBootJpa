@@ -19,6 +19,7 @@ public class AuthenticateSuccessHandler implements AuthenticationSuccessHandler 
         User user = (User) authentication.getPrincipal();
         String token = JwtTokenUtils.createToken(user.getUsername(), false);
         httpServletResponse.setHeader(JwtTokenUtils.TOKEN_HEADER, JwtTokenUtils.TOKEN_PREFIX + token);
+        // 设置跨域状态下允许前端js获取认证请求头，便于前端储存
         httpServletResponse.setHeader("Access-Control-Expose-Headers", JwtTokenUtils.TOKEN_HEADER);
         httpServletResponse.setContentType("application/json;charset=utf-8");
         PrintWriter out = httpServletResponse.getWriter();

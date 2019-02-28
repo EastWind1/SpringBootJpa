@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import test.pojo.dto.UserNote;
 import test.pojo.dto.mapper.UserNoteMapper;
-import test.pojo.entity.Note;
 import test.service.NoteService;
 
 import java.util.ArrayList;

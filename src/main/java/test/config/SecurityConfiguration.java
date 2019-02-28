@@ -27,11 +27,8 @@ import java.io.PrintWriter;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    // 此处必须使用@Bean装配，否则会无限循环，导致栈溢出
-    @Bean
-    public UserDetailsService userDetailsService(){
-        return new UserService();
-    }
+    @Autowired
+    public UserService userService;
 
     @Autowired
     public AuthenticateSuccessHandler authenticateSuccessHandler;
@@ -46,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public TokenAuthenticateFilter tokenAuthenticateFilter;
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService()).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
         // 5.x以上版本必须配置密码配置类
     }
 
@@ -56,31 +53,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // 关闭csrf防护,cors防护
                 .csrf().disable().cors()
                 .and()
-                .authorizeRequests()
-                // 允许所求跨域前置请求
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                // 允许添加用户api访问
-                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
-                .antMatchers("/api/socket").permitAll()
-                .antMatchers("/api/**").authenticated()
-                .antMatchers("/userfiles/**").authenticated()
+                    .authorizeRequests()
+                    // 允许所求跨域前置请求
+                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                    // 允许添加用户api访问
+                    .antMatchers(HttpMethod.POST, "/api/user").permitAll()
+                    .antMatchers("/api/socket").permitAll()
+                    .antMatchers("/api/**").authenticated()
+                    .antMatchers("/userfiles/**").authenticated()
                 .and()
                     .formLogin()
                     .permitAll()
-                .and()
-                    .logout()
-                    .logoutUrl("/api/logout")
-                    .permitAll()
-                .and()
-                    // 覆盖默认访问未授权api跳转登录界面
-                    .exceptionHandling()
-                    .authenticationEntryPoint(authenticateEntryPoint)
                 .and()
                     // 覆盖原有登录拦截器，改用json、form两种形式
                     .addFilterAt(formAndJsonAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                     // 添加Token验证，关闭默认Session验证
                     .addFilterBefore(tokenAuthenticateFilter, UsernamePasswordAuthenticationFilter.class)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                    // 覆盖默认访问未授权api跳转登录界面
+                    .exceptionHandling()
+                    .authenticationEntryPoint(authenticateEntryPoint)
+                .and()
+                    .logout()
+                    .logoutUrl("/api/logout")
+                    .permitAll();
     }
 
     @Bean
