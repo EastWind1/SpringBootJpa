@@ -4,6 +4,9 @@ import org.mapstruct.*;
 import test.pojo.dto.UserNote;
 import test.pojo.entity.Note;
 
+/**
+ * 用户笔记转换类
+ */
 @Mapper(componentModel = "spring")
 public interface UserNoteMapper {
     @Mappings({

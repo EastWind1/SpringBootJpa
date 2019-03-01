@@ -14,8 +14,12 @@ import test.pojo.entity.User;
 
 @Service
 public class UserService implements UserDetailsService {
+    private final UserDao userDao;
+
     @Autowired
-    private UserDao userDao;
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -36,7 +40,7 @@ public class UserService implements UserDetailsService {
         return userDao.save(user);
     }
 
-    public User getAuthUser(){
+    User getAuthUser(){
         SecurityContext context = SecurityContextHolder.getContext();
         return userDao.findByUsername(context.getAuthentication().getName());
     }

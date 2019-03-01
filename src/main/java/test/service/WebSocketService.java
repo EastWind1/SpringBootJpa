@@ -6,9 +6,11 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
-
 import java.util.concurrent.CopyOnWriteArraySet;
 
+/**
+ * WebSocket服务
+ */
 public class WebSocketService implements WebSocketHandler {
     private static Logger logger = LogManager.getLogger(WebSocketService.class);
     private static CopyOnWriteArraySet<WebSocketSession> clients = new CopyOnWriteArraySet();

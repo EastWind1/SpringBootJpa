@@ -3,9 +3,11 @@ package test.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 import java.util.Date;
 
+/**
+ * JWT工具类
+ */
 public class JwtTokenUtils {
 
     public static final String TOKEN_HEADER = "Authorization";

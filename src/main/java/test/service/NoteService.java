@@ -2,29 +2,31 @@ package test.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 import test.dao.NoteDao;
 import test.pojo.entity.Note;
 import test.pojo.entity.QNote;
-
 import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 笔记服务
+ */
 @Service
 public class NoteService {
-    private SecurityContext context;
+
+    private final NoteDao noteDao;
+    private final UserService userService;
+    private final EntityManager entityManager;
+
     @Autowired
-    private NoteDao noteDao;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private EntityManager entityManager;
+    public NoteService(NoteDao noteDao, UserService userService, EntityManager entityManager) {
+        this.noteDao = noteDao;
+        this.userService = userService;
+        this.entityManager = entityManager;
+    }
 
     public Note add(Note note){
         note.setUser(userService.getAuthUser());
@@ -32,10 +34,10 @@ public class NoteService {
         return noteDao.save(note);
     }
 
-    public Note shared(Integer id) {
+    public void shared(Integer id) {
         Note note = noteDao.findById(id).get();
         note.setShared(true);
-        return noteDao.save(note);
+        noteDao.save(note);
     }
 
     public void delete(Integer id){

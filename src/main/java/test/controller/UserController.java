@@ -4,42 +4,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import test.pojo.entity.User;
 import test.service.UserService;
-
 import javax.persistence.EntityManager;
 
 /**
- * 用户相关控制器
+ * 用户API控制器
  */
 
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private EntityManager entityManager;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
-     * 前端检测是否登录，使用Spring Security拦截
+     * 前端检测是否登录
      *
      * @return
      */
     @GetMapping("")
     @ResponseBody
     public Boolean isLogin() {
-        //        QUser qUsers = QUser.users;
-        //        JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(entityManager);
-        //        return jpaQueryFactory.select(qUsers)
-        //                .from(qUsers)
-        //                .where(qUsers.username.startsWith("a"))
-        //                .fetch();
+        // 已启用spring security，仅return
         return true;
     }
 
     /**
      * 注册
-     *
+     * @param username
+     * @param password
      * @return
      * @throws Exception
      */

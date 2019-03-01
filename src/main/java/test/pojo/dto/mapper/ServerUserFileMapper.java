@@ -6,6 +6,9 @@ import org.mapstruct.Mappings;
 import test.pojo.dto.UserFile;
 import test.pojo.entity.ServerFile;
 
+/**
+ * 用户文件转换接口
+ */
 @Mapper(componentModel = "spring")
 public interface ServerUserFileMapper {
     @Mappings({

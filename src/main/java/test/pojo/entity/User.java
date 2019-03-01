@@ -1,17 +1,16 @@
 package test.pojo.entity;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
+/**
+ * 用户类
+ * 配合spring security实现UserDetails接口
+ */
 @Entity
 @Table(name = "user")
 @Data

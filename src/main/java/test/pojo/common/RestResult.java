@@ -1,7 +1,6 @@
 package test.pojo.common;
 
 import lombok.Data;
-
 import java.io.Serializable;
 
 /**

@@ -7,6 +7,10 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import test.service.WebSocketService;
 
+/**
+ * WebScoket配置类
+ * TODO:由于将认证改为Token认证，需实现
+ */
 @Configuration
 @EnableWebSocket
 public class WebSocketConfiguration implements WebSocketConfigurer {

@@ -6,7 +6,6 @@ import lombok.Setter;
 /**
  * spring security json登录实体bean
  */
-
 @Getter
 @Setter
 public class AuthenticationBean {

@@ -2,11 +2,13 @@ package test.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 笔记实体类
+ */
 @Entity
 @Data
 public class Note implements Serializable {

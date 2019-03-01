@@ -2,9 +2,11 @@ package test.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
 import java.util.Date;
 
+/**
+ * 用户笔记
+ */
 @Data
 public class UserNote {
     private String user_name;

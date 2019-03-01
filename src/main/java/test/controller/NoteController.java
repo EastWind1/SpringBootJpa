@@ -5,17 +5,23 @@ import org.springframework.web.bind.annotation.*;
 import test.pojo.dto.UserNote;
 import test.pojo.dto.mapper.UserNoteMapper;
 import test.service.NoteService;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 笔记API控制器
+ */
 @RestController
 @RequestMapping("/api/note")
 public class NoteController {
+    private final UserNoteMapper userNoteMapper;
+    private final NoteService noteService;
+
     @Autowired
-    private UserNoteMapper userNoteMapper;
-    @Autowired
-    private NoteService noteService;
+    public NoteController(UserNoteMapper userNoteMapper, NoteService noteService) {
+        this.userNoteMapper = userNoteMapper;
+        this.noteService = noteService;
+    }
 
     @GetMapping("{id}")
     public UserNote getById(@PathVariable Integer id) {

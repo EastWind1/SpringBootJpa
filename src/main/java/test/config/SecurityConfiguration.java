@@ -1,7 +1,6 @@
 package test.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.devtools.restart.FailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,37 +9,33 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 import test.config.authentication.*;
-import test.pojo.entity.User;
 import test.service.UserService;
-import test.util.JwtTokenUtils;
 
-import java.io.PrintWriter;
-
+/**
+ * spring security 配置类
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    public UserService userService;
+    public final UserService userService;
+    public final AuthenticateSuccessHandler authenticateSuccessHandler;
+    public final AuthenticateFailHandler authenticateFailHandler;
+    public final AuthenticateEntryPoint authenticateEntryPoint;
+    public final TokenAuthenticateFilter tokenAuthenticateFilter;
 
     @Autowired
-    public AuthenticateSuccessHandler authenticateSuccessHandler;
-
-    @Autowired
-    public AuthenticateFailHandler authenticateFailHandler;
-
-    @Autowired
-    public AuthenticateEntryPoint authenticateEntryPoint;
-
-    @Autowired
-    public TokenAuthenticateFilter tokenAuthenticateFilter;
+    public SecurityConfiguration(UserService userService, AuthenticateSuccessHandler authenticateSuccessHandler, AuthenticateFailHandler authenticateFailHandler, AuthenticateEntryPoint authenticateEntryPoint, TokenAuthenticateFilter tokenAuthenticateFilter) {
+        this.userService = userService;
+        this.authenticateSuccessHandler = authenticateSuccessHandler;
+        this.authenticateFailHandler = authenticateFailHandler;
+        this.authenticateEntryPoint = authenticateEntryPoint;
+        this.tokenAuthenticateFilter = tokenAuthenticateFilter;
+    }
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());

@@ -8,16 +8,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.*;
 import test.interceptor.TestInterceptor;
-
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * MVC层配置
+ */
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
     /**
      * 配置静态资源路径
      */
-
     @Value("${filedir.linux}")
     private String linuxdir;
 
@@ -36,11 +36,11 @@ public class MvcConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/apks/**").addResourceLocations(filedir);
         registry.addResourceHandler("/userfiles/**").addResourceLocations(filedir + "userfiles/");
     }
+
     /**
      * MVC层跨域配置，即使在SpringSecurity中配置cors后也必须添加
      * @param registry
      */
-
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")

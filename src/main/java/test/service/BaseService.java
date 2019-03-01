@@ -2,10 +2,13 @@ package test.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 服务层基类
+ * @param <E>
+ * @param <R>
+ */
 public class BaseService<E, R extends JpaRepository<E, Integer>> {
 
     @Autowired

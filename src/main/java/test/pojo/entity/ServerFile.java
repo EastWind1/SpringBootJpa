@@ -2,11 +2,12 @@ package test.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * 服务端文件类
+ */
 @Entity
 @Data
 public class ServerFile {

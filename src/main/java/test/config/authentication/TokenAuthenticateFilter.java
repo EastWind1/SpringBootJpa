@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import test.service.UserService;
 import test.util.JwtTokenUtils;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +21,12 @@ import java.io.IOException;
 @Component
 public class TokenAuthenticateFilter extends OncePerRequestFilter {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public TokenAuthenticateFilter(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {

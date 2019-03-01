@@ -12,8 +12,12 @@ import test.pojo.event.MyTestEvent;
 @RestController
 @RequestMapping("/api/event")
 public class EventController {
+    private final ApplicationContext context; // 应用上下文
+
     @Autowired
-    private ApplicationContext context; // 应用上下文
+    public EventController(ApplicationContext context) {
+        this.context = context;
+    }
 
     @GetMapping("")
     @ResponseBody

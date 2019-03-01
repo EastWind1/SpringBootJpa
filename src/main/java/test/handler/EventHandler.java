@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import test.pojo.event.MyTestEvent;
 
 /**
- * 事件处理
+ * 事件处理测试
  */
 @Async
 @Component
