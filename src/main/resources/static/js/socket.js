@@ -1,7 +1,7 @@
 var websocket;
 
 function connection() {
-    websocket = new WebSocket("ws:" + location.host + "/api/socket");
+    websocket = new WebSocket("ws:" + location.host + "/api/socket?Authorization=Bearer%20eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzcHJpbmdib290anBhIiwic3ViIjoiYWJjIiwiaWF0IjoxNTUzMDUwNzQ4LCJleHAiOjE1NTMwNTQzNDh9.Vz2lSMXAErgLycKljwjQH-90bS9hG0TEYeQS9fLOeWM-oofQ7SNwMXLRSeWehx5ELpSXUJioi4G4J-zDw1lSwQ");
     websocket.onerror = function () {
         setMessageInnerHTML("WebSocket连接发生错误");
     };
